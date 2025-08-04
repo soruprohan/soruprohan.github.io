@@ -81,7 +81,12 @@ body.dark-mode {
 .dark-mode .header.sticky {
   background: rgba(11, 6, 31, 0.7);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  -moz-backdrop-filter: blur(20px);
+  -ms-backdrop-filter: blur(20px);
   border-bottom: none;
+  transform: translateZ(0);
+  will-change: backdrop-filter;
 }
 
 /* Footer enhancements for dark mode - seamless blend */
@@ -113,25 +118,16 @@ body {
 }
 
 .header.sticky {
-  /* background-color: var(--bg-color);
-  box-shadow: 0 0.1rem 1rem var(--shadow-color); */
-
-  background: rgba(255, 255, 255, 0.5); /* semi-transparent white */
+  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  -moz-backdrop-filter: blur(16px);
+  -ms-backdrop-filter: blur(16px);
   box-shadow: 0 0.1rem 1rem var(--shadow-color);
-  
+  /* Force hardware acceleration */
+  transform: translateZ(0);
+  will-change: backdrop-filter;
 }
-
-@supports not (backdrop-filter: blur(16px)) {
-  .header.sticky {
-    background: rgba(255, 255, 255, 0.95); /* More opaque */
-  }
-  
-  .dark-mode .header.sticky {
-    background: rgba(11, 6, 31, 0.95); /* More opaque */
-  }
-}
-
 
 .logo {
   font-size: 2.5rem;
