@@ -122,6 +122,17 @@ body {
   
 }
 
+@supports not (backdrop-filter: blur(16px)) {
+  .header.sticky {
+    background: rgba(255, 255, 255, 0.95); /* More opaque */
+  }
+  
+  .dark-mode .header.sticky {
+    background: rgba(11, 6, 31, 0.95); /* More opaque */
+  }
+}
+
+
 .logo {
   font-size: 2.5rem;
   color: var(--main-color);
