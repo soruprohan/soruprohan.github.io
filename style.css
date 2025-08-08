@@ -104,6 +104,7 @@ body {
   color: var(--text-color);
 }
 
+
 .header {
   position: fixed;
   top: 0;
@@ -113,8 +114,13 @@ body {
   background: transparent;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   z-index: 100;
   transition: 0.5s;
+}
+
+.header-spacer {
+  flex: 1; /* Takes up available space, pushing other elements to the right */
 }
 
 .header.sticky {
@@ -127,15 +133,6 @@ body {
   /* Force hardware acceleration */
   transform: translateZ(0);
   will-change: backdrop-filter;
-}
-
-.logo {
-  font-size: 2.5rem;
-  color: var(--main-color);
-  font-weight: 60;
-  font-weight: 600;
-  cursor: default;
-  margin-right: auto;
 }
 
 .navbar a {
@@ -839,10 +836,6 @@ span {
     color: var(--text-color);
   }
 
-  .navbar a:nth-child(1),
-  .navbar a:nth-child(2) {
-    color: var(--text-color);
-  }
 
   .navbar a.active {
     color: var(--main-color);
@@ -921,12 +914,24 @@ span {
     height: 670px;
     z-index: -1;
   }
-  .home .profession-container .overlay {
+  
+  /* .home .profession-container .overlay {
     position: fixed;
     top: 70rem;
     left: 50%;
     right: 0;
     transform: rotate(90deg) translate(-50%, 50%) scaleY(3);
+    border-width: 23.9rem;
+  } */
+
+  .home .profession-container .overlay {
+    position: fixed;
+    top: calc(100vh - 40rem);
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    transform: rotate(90deg) scaleY(3);
     border-width: 23.9rem;
   }
 
@@ -967,7 +972,7 @@ span {
 
 }
 
-@media (max-width: 810px) and (min-height: 760px) {
+/* @media (max-width: 810px) and (min-height: 760px) {
   .home .profession-container .overlay {
     position: fixed;
     top: 70rem;
@@ -976,7 +981,7 @@ span {
     transform: rotate(90deg) translate(-20%, 50%) scaleY(3);
     border-width: 23.9rem;
   }
-}
+} */
 
 @media (max-width: 617px) {
     .portfolio .portfolio-container {
@@ -1034,9 +1039,13 @@ span {
 }
 
 
+@media (max-width: 810px) {
+  
+}
+
 /*------------------------------------------------------------------------------------------------------------------------*/
 
-/* Skills Section - Matching Portfolio Color Palette */
+/* Skills Section - */
 
 /* Container */
 .container {
