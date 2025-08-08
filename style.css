@@ -371,6 +371,7 @@ span {
 }
 
 .about {
+  min-height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1427,7 +1428,7 @@ span {
 
 .education {
   min-height: auto;
-  padding: 4rem 7% 4rem;
+  /* padding: 4rem 7% 4rem; */
 }
 
 .education h2 {

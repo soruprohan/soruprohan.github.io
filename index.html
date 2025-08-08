@@ -211,8 +211,7 @@
 
                 <div class="portfolio-layer">
                     <h4>Contact Management System</h4>
-                    <p>This a console based program to efficiently operate on managing contacts. This peoject aims to
-                        cover Files and OOP concepts in C++.</p>
+                    <p>This a console based program to efficiently operate on managing contacts. </p>
 
                     <a href="https://github.com/soruprohan/contact-management-system-OOP" target="_blank"><i
                             class='bx bx-link-external'></i></a>
@@ -804,29 +803,34 @@
 
     <script src="index.js"></script>
 
-    <!--contact section design-->
-    <section class="contact" id="contact">
-        <h2 class="heading">Contact <span>Me!</span></h2>
-        <p>
-            <i class='bx bxs-envelope'></i>
-            Email : <a href="mailto:sorupr5@gmail.com">sorupr5@gmail.com</a>
-        </p>
 
-        <form action="https://formsubmit.co/sorupr5@gmail.com" method="POST">
-            <div class="input-box">
-                <input type="text" placeholder="Full Name">
-                <input type="email" placeholder="Email Address">
-            </div>
+   <!-- contact section design -->
+<section class="contact" id="contact">
+    <h2 class="heading">Contact <span>Me!</span></h2>
+    <p>
+        <i class='bx bxs-envelope'></i>
+        Email : <a href="mailto:sorupr5@gmail.com">sorupr5@gmail.com</a>
+    </p>
 
-            <div class="input-box">
-                <input type="number" placeholder="Mobile Number">
-                <input type="text" placeholder="Email Subject">
-            </div>
-            <textarea name="" id="" cols="30" rows="10" placeholder="Your Message"></textarea>
-            <input type="submit" value="Send Message" class="btn">
+    <form action="https://formsubmit.co/sorupr5@gmail.com" method="POST">
+        <!-- <input type="hidden" name="access_key" value="9d4a2fd3-749c-48eb-8f7c-ccdbecff4e75"> -->
 
-        </form>
-    </section>
+        <div class="input-box">
+            <input type="text" name="full_name" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email Address" required>
+        </div>
+
+        <div class="input-box">
+            <input type="tel" name="mobile_number" placeholder="Mobile Number">
+            <input type="text" name="subject" placeholder="Email Subject">
+        </div>
+
+        <textarea name="message" cols="30" rows="10" placeholder="Your Message" required></textarea>
+
+        <input type="submit" value="Send Message" class="btn">
+    </form>
+</section>
+
 
     <!--footer design-->
     <footer class="footer">
