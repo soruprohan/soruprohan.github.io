@@ -1052,6 +1052,12 @@ span {
         margin-right: 0;
     }
 }
+
+@media (max-width: 368px) {
+    .home .profession-container .profession-box {
+        display: none;
+    }
+}
 /*------------------------------------------------------------------------------------------------------------------------*/
 
 /* Skills Section - */
