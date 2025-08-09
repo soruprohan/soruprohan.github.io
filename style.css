@@ -1040,10 +1040,18 @@ span {
 }
 
 
-@media (max-width: 810px) {
-  
+@media (max-width: 384px) {
+    .home .profession-container .overlay {
+        position: fixed;
+        top: calc(100vh - 40rem);
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%) rotate(90deg) scaleY(3);
+        border-width: 23.9rem;
+        margin-left: 0;
+        margin-right: 0;
+    }
 }
-
 /*------------------------------------------------------------------------------------------------------------------------*/
 
 /* Skills Section - */
