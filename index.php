@@ -1,3 +1,49 @@
+<?php
+require_once __DIR__ . '/admin/config.php';
+
+// Education
+$education_rows = [];
+if ($res = $mysqli->query("SELECT * FROM education ORDER BY order_index ASC, start_year DESC, id DESC")) {
+    $education_rows = $res->fetch_all(MYSQLI_ASSOC);
+}
+
+// Projects (only published)
+$project_rows = [];
+if ($res = $mysqli->query("SELECT * FROM projects WHERE published=1 ORDER BY order_index ASC, id DESC")) {
+    $project_rows = $res->fetch_all(MYSQLI_ASSOC);
+}
+
+// Skills grouped by category
+$skill_rows = [];
+if ($res = $mysqli->query("SELECT * FROM skills ORDER BY category ASC, order_index ASC, id DESC")) {
+    $skill_rows = $res->fetch_all(MYSQLI_ASSOC);
+}
+$skills_by_category = [];
+foreach ($skill_rows as $sk) {
+    $skills_by_category[$sk['category']][] = $sk;
+}
+
+/** Optional helper for printing skill items */
+function render_skill_items($skills_by_category, $cat)
+{
+    foreach (($skills_by_category[$cat] ?? []) as $sk) {
+        $name = htmlspecialchars($sk['name']);
+        $exp = htmlspecialchars($sk['experience'] ?? '');
+        $percent = is_null($sk['percent']) ? '' : (int)$sk['percent'];
+        echo '<div class="skill-item"><div class="skill-header">';
+        echo '<span class="skill-name">' . $name . '</span>';
+        if ($exp !== '') echo '<span class="skill-experience">' . $exp . '</span>';
+        if ($percent !== '') echo '<span class="skill-percentage">' . $percent . '%</span>';
+        echo '</div>';
+        if ($percent !== '') {
+            echo '<div class="skill-bar"><div class="skill-progress" data-width="' . $percent . '"></div></div>';
+        }
+        echo '</div>';
+    }
+}
+?>
+<!------------------------------------------------------------->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -121,24 +167,20 @@
         <h2 class="heading"> Education</h2>
 
         <div class="education-container">
-            <div class="education-box">
-                <h3>BSc in Computer Science and Engineering</h3>
-                <p>Khulna University of Engineering & Technology, Khulna, Bangladesh</p>
-                <span class="education-year">2022 – 2026</span>
-            </div>
-
-            <div class="education-box">
-                <h3>HSC </h3>
-                <p>Cantonment Public School & College, Rangpur</p>
-                <span class="education-year">2019 – 2021</span>
-            </div>
-
-            <div class="education-box">
-                <h3>SSC</h3>
-                <p>Rangpur Zilla School, Rangpur</p>
-                <span class="education-year">2011 – 2019</span>
-            </div>
+            <?php foreach ($education_rows as $edu): ?>
+                <div class="education-box">
+                    <h3><?= htmlspecialchars($edu['degree']) ?></h3>
+                    <p><?= htmlspecialchars($edu['institution'] . (!empty($edu['location']) ? ', ' . $edu['location'] : '')) ?></p>
+                    <span class="education-year">
+                        <?= htmlspecialchars($edu['start_year']) ?> – <?= htmlspecialchars($edu['end_year']) ?>
+                    </span>
+                    <?php if (!empty($edu['description'])): ?>
+                        <p><?= nl2br(htmlspecialchars($edu['description'])) ?></p>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
         </div>
+
     </section>
 
 
@@ -182,80 +224,24 @@
         <h2 class="heading">Latest <span>Projects</span></h2>
 
         <div class="portfolio-container">
-
-            <div class="portfolio-box">
-                <img src="assets/money_map2.png" alt="">
-
-                <div class="portfolio-layer">
-                    <h4>Money Map App</h4>
-                    <p>This is an expense tracker and news app for andoird using Java in android studio</p>
-
-                    <a href="https://github.com/soruprohan/Money-Map-App" target="_blank"><i
-                            class='bx bx-link-external'></i></a>
+            <?php foreach ($project_rows as $pr): ?>
+                <div class="portfolio-box">
+                    <?php if (!empty($pr['image_path'])): ?>
+                        <img src="<?= htmlspecialchars($pr['image_path']) ?>" alt="">
+                    <?php endif; ?>
+                    <div class="portfolio-layer">
+                        <h4><?= htmlspecialchars($pr['title']) ?></h4>
+                        <?php if (!empty($pr['description'])): ?>
+                            <p><?= nl2br(htmlspecialchars($pr['description'])) ?></p>
+                        <?php endif; ?>
+                        <?php if (!empty($pr['project_url']) || !empty($pr['repo_url'])): ?>
+                            <a href="<?= htmlspecialchars($pr['project_url'] ?: $pr['repo_url']) ?>" target="_blank"><i class='bx bx-link-external'></i></a>
+                        <?php endif; ?>
+                    </div>
                 </div>
-            </div>
-
-            <div class="portfolio-box">
-                <img src="assets/fake_news.png" alt="">
-
-                <div class="portfolio-layer">
-                    <h4>Fake News Detection</h4>
-                    <p>Fake news detection using NLP and Logistic Regression, with PCA visualization.</p>
-
-                    <a href="https://github.com/soruprohan/Fake-News-Detection" target="_blank"><i
-                            class='bx bx-link-external'></i></a>
-                </div>
-            </div>
-
-            <div class="portfolio-box">
-                <img src="assets/contact_management.png" alt="">
-
-                <div class="portfolio-layer">
-                    <h4>Contact Management System</h4>
-                    <p>This a console based program to efficiently operate on managing contacts. </p>
-
-                    <a href="https://github.com/soruprohan/contact-management-system-OOP" target="_blank"><i
-                            class='bx bx-link-external'></i></a>
-                </div>
-            </div>
-
-            <div class="portfolio-box">
-                <img src="assets/portfolio_pic3.png" alt="">
-
-                <div class="portfolio-layer">
-                    <h4>Personal Website</h4>
-                    <p>This is a personal portfolio website showcasing my Academics and skills.</p>
-
-                    <a href="#"><i class='bx bx-link-external'></i></a>
-                </div>
-            </div>
-
-            <div class="portfolio-box">
-                <img src="assets/bank_management2.png" alt="">
-
-                <div class="portfolio-layer">
-                    <h4>Bank Management System</h4>
-                    <p>This is a console based basic bank account management system using OOP concepts.</p>
-
-                    <a href="https://github.com/soruprohan/BankAccount-Management-System" target="_blank"><i
-                            class='bx bx-link-external'></i></a>
-                </div>
-            </div>
-
-            <div class="portfolio-box">
-                <img src="assets/cpu_pic.jpg" alt="">
-
-                <div class="portfolio-layer">
-                    <h4>A Tiny 18 bit CPU Design </h4>
-                    <p>This project is a simulation of a mini computer built using Logisim, designed to perform basic
-                        (minimal) operations that illustrate how a real computer functions</p>
-
-                    <a href="https://github.com/soruprohan/A-Tiny-18-bit-CPU-Design" target="_blank"><i
-                            class='bx bx-link-external'></i></a>
-                </div>
-            </div>
-
+            <?php endforeach; ?>
         </div>
+
     </section>
 
     <!--testimonial design-->
@@ -267,20 +253,20 @@
                 <div class="testimonial-content swiper-wrapper">
 
                     <div class="testimonial-slide swiper-slide">
-                        <img src="assets/testimonial1.jpg" alt="">
+                        <img src="assets/deans_award.jpg" alt="">
                         <h3>Dean's Award</h3>
                         <p>Recipient of the <b>Dean’s Award</b> for graduating with First Class Honours in all two academic years so far, reflecting consistent
                             academic excellence and dedication.</p>
                     </div>
 
                     <div class="testimonial-slide swiper-slide">
-                        <img src="assets/testimonial2.jpg" alt="">
+                        <img src="assets/ikpc.jpg" alt="">
                         <h3>Intra Kuet Programming Contest</h3>
                         <p>Participated in the <b>Intra Kuet Programming Contest 2023</b>, demonstrating strong analytical and programming skills in a competitive environment.</p>
                     </div>
 
                     <div class="testimonial-slide swiper-slide">
-                        <img src="assets/testimonial3.jpg" alt="">
+                        <img src="assets/computer-program-coding-screen.jpg" alt="">
                         <h3>Club Activities</h3>
                         <p>Active member of <b>SGIPC, KUET</b> and <b>HACK, KUET</b> which are clubs for students dedicated to competitive programming and hardware acceleration.</p>
                     </div>
