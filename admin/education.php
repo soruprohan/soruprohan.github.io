@@ -116,8 +116,8 @@ $rows = $res->fetch_all(MYSQLI_ASSOC);
   <div class="top">
     <h2>Manage Education</h2>
     <div>
-      <a class="button" href="/admin/dashboard.php">Dashboard</a>
-      <a class="button" href="/admin/logout.php">Logout</a>
+      <a class="button" href="/sorup_portfolio/admin/dashboard.php">Dashboard</a>
+      <a class="button" href="/sorup_portfolio/admin/logout.php">Logout</a>
     </div>
   </div>
 
