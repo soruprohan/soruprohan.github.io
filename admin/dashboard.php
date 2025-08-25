@@ -106,7 +106,8 @@
   <div class="container">
     <div class="top">
       <h2>Welcome, <?= htmlspecialchars($_SESSION['admin_username'] ?? 'Admin') ?></h2>
-      <div>
+      <div style="display: flex; gap: 1rem;">
+        <a class="button" href="/sorup_portfolio/admin/change_password.php" style="background: linear-gradient(135deg, #38a169, #48bb78); box-shadow: 0 4px 15px rgba(56, 161, 105, 0.2);">Change Password</a>
         <a class="button logout-btn" href="/sorup_portfolio/admin/logout.php">Logout</a>
       </div>
     </div>
@@ -123,9 +124,9 @@
         <a class="button" href="/sorup_portfolio/admin/projects.php">Manage</a>
       </div>
       <div class="card">
-        <h3>Skills</h3>
-        <p>Organize skills by categories.</p>
-        <a class="button" href="/sorup_portfolio/admin/skills.php">Manage</a>
+        <h3>Testimonials</h3>
+        <p>Manage client testimonials.</p>
+        <a class="button" href="/sorup_portfolio/admin/testimonials.php">Manage</a>
       </div>
     </div>
   </div>

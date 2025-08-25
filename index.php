@@ -13,6 +13,12 @@ if ($res = $mysqli->query("SELECT * FROM projects WHERE published=1 ORDER BY ord
     $project_rows = $res->fetch_all(MYSQLI_ASSOC);
 }
 
+// Testimonials
+$testimonial_rows = [];
+if ($res = $mysqli->query("SELECT * FROM testimonials ORDER BY order_index ASC, id DESC")) {
+    $testimonial_rows = $res->fetch_all(MYSQLI_ASSOC);
+}
+
 ?>
 <!------------------------------------------------------------->
 
@@ -224,24 +230,38 @@ if ($res = $mysqli->query("SELECT * FROM projects WHERE published=1 ORDER BY ord
             <div class="testimonial-box mySwiper">
                 <div class="testimonial-content swiper-wrapper">
 
-                    <div class="testimonial-slide swiper-slide">
-                        <img src="assets/deans_award.jpg" alt="">
-                        <h3>Dean's Award</h3>
-                        <p>Recipient of the <b>Dean’s Award</b> for graduating with First Class Honours in all two academic years so far, reflecting consistent
-                            academic excellence and dedication.</p>
-                    </div>
+                    <?php if (empty($testimonial_rows)): ?>
+                        <!-- Fallback content when no testimonials in database -->
+                        <div class="testimonial-slide swiper-slide">
+                            <img src="assets/deans_award.jpg" alt="">
+                            <h3>Dean's Award</h3>
+                            <p>Recipient of the <b>Dean's Award</b> for graduating with First Class Honours in all two academic years so far, reflecting consistent
+                                academic excellence and dedication.</p>
+                        </div>
 
-                    <div class="testimonial-slide swiper-slide">
-                        <img src="assets/ikpc.jpg" alt="">
-                        <h3>Intra Kuet Programming Contest</h3>
-                        <p>Participated in the <b>Intra Kuet Programming Contest 2023</b>, demonstrating strong analytical and programming skills in a competitive environment.</p>
-                    </div>
+                        <div class="testimonial-slide swiper-slide">
+                            <img src="assets/ikpc.jpg" alt="">
+                            <h3>Intra Kuet Programming Contest</h3>
+                            <p>Participated in the <b>Intra Kuet Programming Contest 2023</b>, demonstrating strong analytical and programming skills in a competitive environment.</p>
+                        </div>
 
-                    <div class="testimonial-slide swiper-slide">
-                        <img src="assets/computer-program-coding-screen.jpg" alt="">
-                        <h3>Club Activities</h3>
-                        <p>Active member of <b>SGIPC, KUET</b> and <b>HACK, KUET</b> which are clubs for students dedicated to competitive programming and hardware acceleration.</p>
-                    </div>
+                        <div class="testimonial-slide swiper-slide">
+                            <img src="assets/computer-program-coding-screen.jpg" alt="">
+                            <h3>Club Activities</h3>
+                            <p>Active member of <b>SGIPC, KUET</b> and <b>HACK, KUET</b> which are clubs for students dedicated to competitive programming and hardware acceleration.</p>
+                        </div>
+                    <?php else: ?>
+                        <!-- Dynamic content from database -->
+                        <?php foreach ($testimonial_rows as $testimonial): ?>
+                            <div class="testimonial-slide swiper-slide">
+                                <?php if (!empty($testimonial['image_path'])): ?>
+                                    <img src="<?= htmlspecialchars($testimonial['image_path']) ?>" alt="">
+                                <?php endif; ?>
+                                <h3><?= htmlspecialchars($testimonial['title']) ?></h3>
+                                <p><?= nl2br(htmlspecialchars($testimonial['description'])) ?></p>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
 
                 </div>
 
@@ -251,7 +271,6 @@ if ($res = $mysqli->query("SELECT * FROM projects WHERE published=1 ORDER BY ord
             </div>
         </div>
     </div>
-
     <!-- Skill section design -->
 
     <section class="skills-section" id="skills-section">
