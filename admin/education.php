@@ -72,21 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $stmt->bind_param('ssssssi', $title, $description, $image_path, $project_url, $repo_url, $published, $order_index);
     }
     $stmt->execute();
-  } else { // skills
-    $category = $_POST['category'] ?? '';
-    $name = $_POST['name'] ?? '';
-    $experience = $_POST['experience'] ?? null;
-    $percent = $_POST['percent'] !== '' ? (int)$_POST['percent'] : null;
-    $order_index = (int)($_POST['order_index'] ?? 0);
-
-    if ($editing_id) {
-      $stmt = $mysqli->prepare("UPDATE skills SET category=?, name=?, experience=?, percent=?, order_index=? WHERE id=?");
-      $stmt->bind_param('sssiii', $category, $name, $experience, $percent, $order_index, $editing_id);
-    } else {
-      $stmt = $mysqli->prepare("INSERT INTO skills (category, name, experience, percent, order_index) VALUES (?, ?, ?, ?, ?)");
-      $stmt->bind_param('sssii', $category, $name, $experience, $percent, $order_index);
-    }
-    $stmt->execute();
   }
   header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?'));
   exit;

@@ -13,34 +13,6 @@ if ($res = $mysqli->query("SELECT * FROM projects WHERE published=1 ORDER BY ord
     $project_rows = $res->fetch_all(MYSQLI_ASSOC);
 }
 
-// Skills grouped by category
-$skill_rows = [];
-if ($res = $mysqli->query("SELECT * FROM skills ORDER BY category ASC, order_index ASC, id DESC")) {
-    $skill_rows = $res->fetch_all(MYSQLI_ASSOC);
-}
-$skills_by_category = [];
-foreach ($skill_rows as $sk) {
-    $skills_by_category[$sk['category']][] = $sk;
-}
-
-/** Optional helper for printing skill items */
-function render_skill_items($skills_by_category, $cat)
-{
-    foreach (($skills_by_category[$cat] ?? []) as $sk) {
-        $name = htmlspecialchars($sk['name']);
-        $exp = htmlspecialchars($sk['experience'] ?? '');
-        $percent = is_null($sk['percent']) ? '' : (int)$sk['percent'];
-        echo '<div class="skill-item"><div class="skill-header">';
-        echo '<span class="skill-name">' . $name . '</span>';
-        if ($exp !== '') echo '<span class="skill-experience">' . $exp . '</span>';
-        if ($percent !== '') echo '<span class="skill-percentage">' . $percent . '%</span>';
-        echo '</div>';
-        if ($percent !== '') {
-            echo '<div class="skill-bar"><div class="skill-progress" data-width="' . $percent . '"></div></div>';
-        }
-        echo '</div>';
-    }
-}
 ?>
 <!------------------------------------------------------------->
 
