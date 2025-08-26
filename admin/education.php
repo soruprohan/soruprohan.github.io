@@ -30,49 +30,22 @@ if ($editing_id) {
 
 // Create/Update
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  if ($table === 'education') {
-    $degree = $_POST['degree'] ?? '';
-    $institution = $_POST['institution'] ?? '';
-    $location = $_POST['location'] ?? null;
-    $start_year = $_POST['start_year'] ?: null;
-    $end_year = $_POST['end_year'] ?: null;
-    $description = $_POST['description'] ?? null;
-    $order_index = (int)($_POST['order_index'] ?? 0);
+  $degree = $_POST['degree'] ?? '';
+  $institution = $_POST['institution'] ?? '';
+  $location = $_POST['location'] ?? null;
+  $start_year = $_POST['start_year'] ?: null;
+  $end_year = $_POST['end_year'] ?: null;
+  $description = $_POST['description'] ?? null;
+  $order_index = (int)($_POST['order_index'] ?? 0);
 
-    if ($editing_id) {
-      $stmt = $mysqli->prepare("UPDATE education SET degree=?, institution=?, location=?, start_year=?, end_year=?, description=?, order_index=? WHERE id=?");
-      $stmt->bind_param('ssssssii', $degree, $institution, $location, $start_year, $end_year, $description, $order_index, $editing_id);
-    } else {
-      $stmt = $mysqli->prepare("INSERT INTO education (degree, institution, location, start_year, end_year, description, order_index) VALUES (?, ?, ?, ?, ?, ?, ?)");
-      $stmt->bind_param('ssssssi', $degree, $institution, $location, $start_year, $end_year, $description, $order_index);
-    }
-    $stmt->execute();
-  } elseif ($table == 'projects') {
-    $title = $_POST['title'] ?? '';
-    $description = $_POST['description'] ?? null;
-    $project_url = $_POST['project_url'] ?? null;
-    $repo_url = $_POST['repo_url'] ?? null;
-    $published = isset($_POST['published']) ? (int)$_POST['published'] : 1;
-    $order_index = (int)($_POST['order_index'] ?? 0);
-
-    $image_path = $item['image_path'] ?? null;
-    if (!empty($_FILES['image_file']['name'])) {
-      $fname = time() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '_', $_FILES['image_file']['name']);
-      $target = $uploadDir . $fname;
-      if (move_uploaded_file($_FILES['image_file']['tmp_name'], $target)) {
-        $image_path = 'assets/uploads/' . $fname;
-      }
-    }
-
-    if ($editing_id) {
-      $stmt = $mysqli->prepare("UPDATE projects SET title=?, description=?, image_path=?, project_url=?, repo_url=?, published=?, order_index=? WHERE id=?");
-      $stmt->bind_param('ssssssii', $title, $description, $image_path, $project_url, $repo_url, $published, $order_index, $editing_id);
-    } else {
-      $stmt = $mysqli->prepare("INSERT INTO projects (title, description, image_path, project_url, repo_url, published, order_index) VALUES (?, ?, ?, ?, ?, ?, ?)");
-      $stmt->bind_param('ssssssi', $title, $description, $image_path, $project_url, $repo_url, $published, $order_index);
-    }
-    $stmt->execute();
+  if ($editing_id) {
+    $stmt = $mysqli->prepare("UPDATE education SET degree=?, institution=?, location=?, start_year=?, end_year=?, description=?, order_index=? WHERE id=?");
+    $stmt->bind_param('ssssssii', $degree, $institution, $location, $start_year, $end_year, $description, $order_index, $editing_id);
+  } else {
+    $stmt = $mysqli->prepare("INSERT INTO education (degree, institution, location, start_year, end_year, description, order_index) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param('ssssssi', $degree, $institution, $location, $start_year, $end_year, $description, $order_index);
   }
+  $stmt->execute();
   header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?'));
   exit;
 }

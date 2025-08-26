@@ -1,6 +1,5 @@
 <?php
 // admin/config.php
-// Adjust credentials to match your phpMyAdmin setup
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
