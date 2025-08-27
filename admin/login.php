@@ -1,25 +1,56 @@
+
 <?php
 // admin/login.php
 require_once __DIR__ . '/config.php';
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 $error = '';
 
+// Auto-login with remember me token
+if (empty($_SESSION['admin_id']) && !empty($_COOKIE['admin_remember'])) {
+  $token = $_COOKIE['admin_remember'];
+  $stmt = $mysqli->prepare('SELECT id, username FROM admins WHERE remember_token = ? LIMIT 1');
+  $stmt->bind_param('s', $token);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  if ($row = $res->fetch_assoc()) {
+    $_SESSION['admin_id'] = $row['id'];
+    $_SESSION['admin_username'] = $row['username'];
+    header('Location:/sorup_portfolio/admin/dashboard.php');
+    exit;
+  }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username'] ?? '');
-    $password = $_POST['password'] ?? '';
-    $stmt = $mysqli->prepare('SELECT id, password_hash FROM admins WHERE username = ? LIMIT 1');
-    $stmt->bind_param('s', $username);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    if ($row = $res->fetch_assoc()) {
-        if (password_verify($password, $row['password_hash'])) {
-            $_SESSION['admin_id'] = $row['id'];
-            $_SESSION['admin_username'] = $username;
-            header('Location:/sorup_portfolio/admin/dashboard.php');
-            exit;
-        }
+  $username = trim($_POST['username'] ?? '');
+  $password = $_POST['password'] ?? '';
+  $remember = isset($_POST['remember_me']);
+  $stmt = $mysqli->prepare('SELECT id, password_hash FROM admins WHERE username = ? LIMIT 1');
+  $stmt->bind_param('s', $username);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  if ($row = $res->fetch_assoc()) {
+    if (password_verify($password, $row['password_hash'])) {
+      $_SESSION['admin_id'] = $row['id'];
+      $_SESSION['admin_username'] = $username;
+      // Set a persistent login token if 'Remember Me' is checked
+      if ($remember) {
+        $token = bin2hex(random_bytes(32));
+        $stmt2 = $mysqli->prepare('UPDATE admins SET remember_token = ? WHERE id = ?');
+        $stmt2->bind_param('si', $token, $row['id']);
+        $stmt2->execute();
+        setcookie('admin_remember', $token, time() + 60 * 60 * 24 * 30, '/');
+      } else {
+        // Remove token if unchecked
+        $stmt2 = $mysqli->prepare('UPDATE admins SET remember_token = NULL WHERE id = ?');
+        $stmt2->bind_param('i', $row['id']);
+        $stmt2->execute();
+        setcookie('admin_remember', '', time() - 3600, '/');
+      }
+      header('Location:/sorup_portfolio/admin/dashboard.php');
+      exit;
     }
-    $error = 'Invalid username or password';
+  }
+  $error = 'Invalid username or password';
 }
 ?>
 <!DOCTYPE html>
@@ -123,9 +154,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if ($error): ?><div class="error"><?= htmlspecialchars($error) ?></div><?php endif; ?>
     <form method="post">
       <label>Username</label>
-      <input name="username" required>
+      <input name="username" required value="<?= htmlspecialchars($_COOKIE['admin_username'] ?? '') ?>">
       <label>Password</label>
       <input type="password" name="password" required>
+      <div style="margin: 0.5rem 0 1rem 0; display: flex; align-items: center;">
+        <input type="checkbox" id="remember_me" name="remember_me" style="width: auto; margin-right: 0.5rem;" <?= isset($_COOKIE['admin_username']) && $_COOKIE['admin_username'] ? 'checked' : '' ?>>
+        <label for="remember_me" style="margin: 0; font-weight: 400; color: #495057;">Remember Me</label>
+      </div>
       <button type="submit">Login</button>
     </form>
   </div>

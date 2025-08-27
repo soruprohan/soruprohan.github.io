@@ -65,7 +65,7 @@ $rows = $res->fetch_all(MYSQLI_ASSOC);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manage Testimonials</title>
+  <title>Manage Activities</title>
   <style>
     * { box-sizing: border-box; }
     body { 
@@ -223,7 +223,7 @@ $rows = $res->fetch_all(MYSQLI_ASSOC);
 <body>
   <div class="container">
     <div class="top">
-      <h2>Manage Testimonials</h2>
+      <h2>Manage Activities and Achievements</h2>
       <div>
         <a class="button dashboard-btn" href="/sorup_portfolio/admin/dashboard.php">Dashboard</a>
         <a class="button logout-btn" href="/sorup_portfolio/admin/logout.php">Logout</a>
@@ -231,7 +231,7 @@ $rows = $res->fetch_all(MYSQLI_ASSOC);
     </div>
 
     <div class="form-card">
-      <h3><?= $editing_id ? 'Edit' : 'Add New' ?> Testimonial</h3>
+      <h3><?= $editing_id ? 'Edit' : 'Add New' ?> Activities</h3>
       <form method="post" enctype="multipart/form-data">
           <label>Title</label><input name="title" value="<?= htmlspecialchars($item['title'] ?? '') ?>" required>
           <label>Description</label><textarea name="description" rows="4" required><?= htmlspecialchars($item['description'] ?? '') ?></textarea>
