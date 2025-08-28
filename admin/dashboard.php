@@ -124,8 +124,8 @@
         <a class="button" href="/sorup_portfolio/admin/projects.php">Manage</a>
       </div>
       <div class="card">
-        <h3>Testimonials</h3>
-        <p>Manage client testimonials.</p>
+        <h3>Activities</h3>
+        <p>Manage your activities.</p>
         <a class="button" href="/sorup_portfolio/admin/testimonials.php">Manage</a>
       </div>
     </div>

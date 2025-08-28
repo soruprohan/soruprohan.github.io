@@ -7,7 +7,7 @@ require 'PHPMailer/Exception.php';
 require 'PHPMailer/PHPMailer.php';
 require 'PHPMailer/SMTP.php';
 
-// Get form data
+
 $name = $_POST['full_name'] ?? '';
 $email = $_POST['email'] ?? '';
 $mobile = $_POST['mobile_number'] ?? '';
@@ -17,20 +17,19 @@ $message = $_POST['message'] ?? '';
 $mail = new PHPMailer(true);
 
 try {
-    //Server settings
+    
     $mail->isSMTP();
-    $mail->Host       = 'smtp.gmail.com'; // Use your SMTP server
+    $mail->Host       = 'smtp.gmail.com'; 
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'sorupr5@gmail.com'; // Your email
-    $mail->Password   = 'ucyyoctyariuapjr';    // Your app password (not your Gmail password)
+    $mail->Username   = 'sorupr5@gmail.com'; 
+    $mail->Password   = 'ucyyoctyariuapjr';    
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
 
-    //Recipients
     $mail->setFrom($email, $name);
-    $mail->addAddress('sorupr5@gmail.com', 'Sorup Rohan'); // Your receiving email
+    $mail->addAddress('sorupr5@gmail.com', 'Sorup Rohan'); 
 
-    // Content
+  
     $mail->isHTML(true);
     $mail->Subject = $subject ?: 'Contact Form Submission';
     $mail->Body    = "

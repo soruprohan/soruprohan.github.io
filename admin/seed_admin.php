@@ -1,7 +1,5 @@
 <?php
-// admin/seed_admin.php
 // Run once to create/update the default admin user.
-// Usage in browser: /admin/seed_admin.php?ok=1
 require_once __DIR__ . '/config.php';
 
 if (php_sapi_name() !== 'cli' && empty($_GET['ok'])) {
@@ -10,7 +8,7 @@ if (php_sapi_name() !== 'cli' && empty($_GET['ok'])) {
 }
 
 $username = 'admin';
-$password_plain = 'admin123'; // Change after first login!
+$password_plain = 'admin123'; // Changed after first login
 $hash = password_hash($password_plain, PASSWORD_DEFAULT);
 
 $stmt = $mysqli->prepare('INSERT INTO admins (username, password_hash) VALUES (?, ?) ON DUPLICATE KEY UPDATE password_hash = VALUES(password_hash)');
@@ -20,4 +18,3 @@ if ($stmt->execute()) {
 } else {
     echo 'Error: ' . $mysqli->error;
 }
-?>

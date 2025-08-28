@@ -777,7 +777,6 @@ if ($res = $mysqli->query("SELECT * FROM testimonials ORDER BY order_index ASC, 
         </p>
 
         <form action="/sorup_portfolio/send_mail.php" method="POST">
-            <!-- <input type="hidden" name="access_key" value="9d4a2fd3-749c-48eb-8f7c-ccdbecff4e75"> -->
 
             <div class="input-box">
                 <input type="text" name="full_name" placeholder="Full Name" required>

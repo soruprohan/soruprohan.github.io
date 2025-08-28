@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (password_verify($password, $row['password_hash'])) {
       $_SESSION['admin_id'] = $row['id'];
       $_SESSION['admin_username'] = $username;
-      // Set a persistent login token if 'Remember Me' is checked
+      // Sets a persistent login token if 'Remember Me' is checked
       if ($remember) {
         $token = bin2hex(random_bytes(32));
         $stmt2 = $mysqli->prepare('UPDATE admins SET remember_token = ? WHERE id = ?');
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt2->execute();
         setcookie('admin_remember', $token, time() + 60 * 60 * 24 * 30, '/');
       } else {
-        // Remove token if unchecked
+        // Removes token if unchecked
         $stmt2 = $mysqli->prepare('UPDATE admins SET remember_token = NULL WHERE id = ?');
         $stmt2->bind_param('i', $row['id']);
         $stmt2->execute();
