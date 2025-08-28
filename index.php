@@ -13,7 +13,7 @@ if ($res = $mysqli->query("SELECT * FROM projects WHERE published=1 ORDER BY ord
     $project_rows = $res->fetch_all(MYSQLI_ASSOC);
 }
 
-// Testimonials
+// activities
 $testimonial_rows = [];
 if ($res = $mysqli->query("SELECT * FROM testimonials ORDER BY order_index ASC, id DESC")) {
     $testimonial_rows = $res->fetch_all(MYSQLI_ASSOC);
@@ -106,7 +106,7 @@ if ($res = $mysqli->query("SELECT * FROM testimonials ORDER BY order_index ASC, 
 
             <div class="overlay"></div>
 
-            <!--There is some issues on this image part from video-->
+
             <div class="home-img">
                 <img src="assets/formal_pic-Photoroom.png" alt="Home image">
             </div>
@@ -776,7 +776,7 @@ if ($res = $mysqli->query("SELECT * FROM testimonials ORDER BY order_index ASC, 
             Email : <a href="mailto:sorupr5@gmail.com">sorupr5@gmail.com</a>
         </p>
 
-        <form action="https://formsubmit.co/sorupr5@gmail.com" method="POST">
+        <form action="/sorup_portfolio/send_mail.php" method="POST">
             <!-- <input type="hidden" name="access_key" value="9d4a2fd3-749c-48eb-8f7c-ccdbecff4e75"> -->
 
             <div class="input-box">
